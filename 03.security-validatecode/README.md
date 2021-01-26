@@ -1,0 +1,34 @@
+# security-validatecode 添加图形验证码
+
+添加验证码大致可以分为三个步骤：根据随机数生成验证码图片；将验证码图片显示到登录页面；认证流程中加入验证码校验。Spring Security的认证校验是由UsernamePasswordAuthenticationFilter过滤器完成的，所以我们的验证码校验逻辑应该在这个过滤器之前。
+
+验证码功能需要用到spring-social-config依赖：
+
+首先定义一个验证码对象ImageCode：     
+ImageCode对象包含了三个属性：image图片，code验证码和expireTime过期时间。isExpire方法用于判断验证码是否已过期。
+
+接着定义一个ValidateCodeController，用于处理生成验证码请求：    
+createImageCode方法用于生成验证码对象，org.springframework.social.connect.web.HttpSessionSessionStrategy对象封装了一些处理Session的方法，包含了setAttribute、getAttribute和removeAttribute方法，具体可以查看该类的源码。使用sessionStrategy将生成的验证码对象存储到Session中，并通过IO流将生成的图片输出到登录页面上。
+
+
+#### 认证流程添加验证码校验
+
+在校验验证码的过程中，可能会抛出各种验证码类型的异常，比如“验证码错误”、“验证码已过期”等，所以我们定义一个验证码类型的异常类：
+
+注意，这里继承的是AuthenticationException而不是Exception。
+
+我们都知道，Spring Security实际上是由许多过滤器组成的过滤器链，处理用户登录逻辑的过滤器为UsernamePasswordAuthenticationFilter，而验证码校验过程应该是在这个过滤器之前的，即只有验证码校验通过后采去校验用户名和密码。由于Spring Security并没有直接提供验证码校验相关的过滤器接口，所以我们需要自己定义一个验证码校验的过滤器ValidateCodeFilter：
+
+ValidateCodeFilter继承了org.springframework.web.filter.OncePerRequestFilter，该过滤器只会执行一次。
+
+在doFilterInternal方法中我们判断了请求URL是否为/login，该路径对应登录form表单的action路径，请求的方法是否为POST，是的话进行验证码校验逻辑，否则直接执行filterChain.doFilter让代码往下走。当在验证码校验的过程中捕获到异常时，调用Spring Security的校验失败处理器AuthenticationFailureHandler进行处理。
+
+
+
+
+
+
+
+
+
+

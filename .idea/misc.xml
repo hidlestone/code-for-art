@@ -8,8 +8,15 @@
         <option value="$PROJECT_DIR$/security-example-03/pom.xml" />
         <option value="$PROJECT_DIR$/security-example-04/pom.xml" />
         <option value="$PROJECT_DIR$/security-example-05/pom.xml" />
+        <option value="$PROJECT_DIR$/01.security-start/pom.xml" />
+        <option value="$PROJECT_DIR$/02.security-authentication/pom.xml" />
+        <option value="$PROJECT_DIR$/03.security-validatecode/pom.xml" />
+        <option value="$PROJECT_DIR$/04.security-rememberme/pom.xml" />
+        <option value="$PROJECT_DIR$/05.security-smscode/pom.xml" />
+        <option value="$PROJECT_DIR$/06.security-sessionmanager/pom.xml" />
+        <option value="$PROJECT_DIR$/07.security-rbac/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>
